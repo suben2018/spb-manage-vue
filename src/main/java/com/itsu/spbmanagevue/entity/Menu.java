@@ -3,6 +3,10 @@ package com.itsu.spbmanagevue.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.itsu.annotation.TreeBean;
+import com.itsu.annotation.TreeChildren;
+import com.itsu.annotation.TreeId;
+import com.itsu.annotation.TreePid;
 import lombok.Data;
 
 import java.util.List;
@@ -14,9 +18,11 @@ import java.util.Set;
  */
 @Data
 @TableName("tb_menu")
+@TreeBean
 public class Menu {
 
     @TableId("menu_id")
+    @TreeId
     private Integer menuId;
 
     @TableField("menu_name")
@@ -25,6 +31,7 @@ public class Menu {
     @TableField("url")
     private String url;
 
+    @TreePid
     @TableField("pid")
     private Integer pid;
 
@@ -34,6 +41,7 @@ public class Menu {
     @TableField(exist = false)
     private Set<Button> buttons;
 
+    @TreeChildren
     @TableField(exist = false)
     List<Menu> childrenMenus;
 }

@@ -52,4 +52,7 @@
             tb_user.id = #{value}
     </select>
 
+    <select id="selectUserByPage" resultType="java.util.HashMap">
+        select a.* , b.role_name roleName from tb_user a join tb_role b on a.rid = b.rid
+    </select>
 </mapper>

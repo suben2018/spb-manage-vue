@@ -46,6 +46,7 @@ public class SpbManageVueApplication implements WebMvcConfigurer {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/apis/**")
                         .allowedOrigins("*")
+                        .allowedHeaders("*")
                         .allowedMethods("GET", "PUT", "POST", "OPTIONS", "DELETE")
                         .maxAge(3600)
                         .allowCredentials(true);

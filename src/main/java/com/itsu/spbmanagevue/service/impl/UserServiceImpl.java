@@ -1,6 +1,8 @@
 package com.itsu.spbmanagevue.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.itsu.spbmanagevue.components.exception.SystemException;
 import com.itsu.spbmanagevue.dao.UserDAO;
 import com.itsu.spbmanagevue.entity.User;
@@ -39,7 +41,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new SystemException("输入参数为null");
         }
-        Map<String,Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         QueryWrapper<User> condition = new QueryWrapper<>();
         condition.eq("username", user.getUsername());
         condition.eq("pwd", user.getPwd());
@@ -53,6 +55,14 @@ public class UserServiceImpl implements UserService {
             resonseObj = resonseObj.createSuccess();
         }
         return resonseObj;
+    }
+
+    @Override
+    public IPage<HashMap> getUsersByPage(Integer currentPage, Integer pageSize) {
+        Page page = new Page<>();
+        page.setCurrent(currentPage.longValue());
+        page.setSize(pageSize.longValue());
+        return userDAO.selectUserByPage(page);
     }
 
 }
