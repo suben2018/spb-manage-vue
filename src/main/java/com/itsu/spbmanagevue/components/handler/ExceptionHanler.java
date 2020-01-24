@@ -4,7 +4,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.itsu.spbmanagevue.components.exception.AuthenException;
 import com.itsu.spbmanagevue.components.exception.SystemException;
-import com.itsu.spbmanagevue.response.ResonseObj;
+import com.itsu.spbmanagevue.response.ResponseObj;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,26 +23,27 @@ public class ExceptionHanler {
 
     @ExceptionHandler(JWTVerificationException.class)
     @ResponseBody
-    public ResonseObj handleAuthenException(HttpServletRequest request, HttpServletResponse response, Exception e) {
+    public ResponseObj handleAuthenException(HttpServletRequest request, HttpServletResponse response, Exception e) {
         log.error(e.getMessage(), e);
-        ResonseObj resonseObj = null;
+        ResponseObj resonseObj = null;
         if (e instanceof TokenExpiredException) {
-            resonseObj = ResonseObj.createError(401, "登录超时");
+            resonseObj = ResponseObj.createError(401, "登录超时");
         } else if (e instanceof AuthenException) {
-            resonseObj = ResonseObj.createError(401, e.getMessage());
+            resonseObj = ResponseObj.createError(401, e.getMessage());
         } else {
-            resonseObj = ResonseObj.createError(401, "token 验证失败");
+            resonseObj = ResponseObj.createError(401, "token 验证失败");
         }
         return resonseObj;
     }
 
     @ExceptionHandler(SystemException.class)
     @ResponseBody
-    public ResonseObj handleSystemException(HttpServletRequest request, Exception e) {
+    public ResponseObj handleSystemException(HttpServletRequest request, Exception e) {
 
         log.error(e.getMessage(), e);
-        ResonseObj error = ResonseObj.createError(e.getMessage());
+        ResponseObj error = ResponseObj.createError(e.getMessage());
         return error;
     }
+
 
 }

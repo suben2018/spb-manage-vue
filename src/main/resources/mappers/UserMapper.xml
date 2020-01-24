@@ -55,4 +55,9 @@
     <select id="selectUserByPage" resultType="java.util.HashMap">
         select a.* , b.role_name roleName from tb_user a join tb_role b on a.rid = b.rid
     </select>
+
+    <insert id="insertUser" parameterType="com.itsu.spbmanagevue.entity.User">
+        insert into tb_user (username, pwd, email,mobile, stat, rid)
+        values(#{username} , #{pwd},#{email},#{mobile},#{stat}, #{role.rid})
+    </insert>
 </mapper>

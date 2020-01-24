@@ -17,4 +17,6 @@ public interface UserDAO extends BaseMapper<User> {
 
     IPage<HashMap> selectUserByPage(Page page);
 
+    void insertUser(User user);
+
 }

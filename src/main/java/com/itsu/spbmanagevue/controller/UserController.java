@@ -7,7 +7,7 @@ import com.itsu.spbmanagevue.components.constant.ProjectConstant;
 import com.itsu.spbmanagevue.components.exception.SystemException;
 import com.itsu.spbmanagevue.entity.Menu;
 import com.itsu.spbmanagevue.entity.User;
-import com.itsu.spbmanagevue.response.ResonseObj;
+import com.itsu.spbmanagevue.response.ResponseObj;
 import com.itsu.spbmanagevue.service.MenuService;
 import com.itsu.spbmanagevue.service.TokenService;
 import com.itsu.spbmanagevue.service.UserService;
@@ -38,8 +38,8 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/login")
-    public ResonseObj login(@RequestBody User user) throws Exception {
-        ResonseObj result = userService.login(user);
+    public ResponseObj login(@RequestBody User user) throws Exception {
+        ResponseObj result = userService.login(user);
         Integer code = result.getCode();
         if (code != 0) {
             return result;
@@ -66,30 +66,54 @@ public class UserController {
     @GetMapping("/menu/{username}")
     @UserLoginToken
     @RefreshUserToken
-    public ResonseObj getUserMenusTree(@PathVariable("username") String username) throws SystemException {
+    public ResponseObj getUserMenusTree(@PathVariable("username") String username) throws SystemException {
         List<Menu> menus = menuService.getMenusForCurrentUser(username);
-        ResonseObj resonseObj = ResonseObj.createSuccess(menus);
+        ResponseObj resonseObj = ResponseObj.createSuccess(menus);
         return resonseObj;
     }
 
     @GetMapping("/userlist/{currentPage}/{pageSize}")
     @UserLoginToken
     @RefreshUserToken
-    public ResonseObj getUserListData(@PathVariable("currentPage") Integer currentPage, @PathVariable("pageSize") Integer pageSize) {
+    public ResponseObj getUserListData(@PathVariable("currentPage") Integer currentPage, @PathVariable("pageSize") Integer pageSize) {
 //        Assert.notEmpty(new Object[]{currentPage, pageSize}, "分页参数为空");
         IPage<HashMap> page = userService.getUsersByPage(currentPage, pageSize);
         Map data = new HashMap();
         data.put("total", page.getTotal());
         data.put("users", page.getRecords());
-        return ResonseObj.createSuccess(data);
+        return ResponseObj.createSuccess(data);
     }
 
     @GetMapping("/usermenubutton/{menuId}")
     @UserLoginToken
     @RefreshUserToken
-    public ResonseObj getUserMenuButton(@PathVariable("menuId") Integer menuId) {
+    public ResponseObj getUserMenuButton(@PathVariable("menuId") Integer menuId) {
         List<Integer> buttonIds = menuService.getMenuButtonId(menuId);
-        return ResonseObj.createSuccess(buttonIds);
+        return ResponseObj.createSuccess(buttonIds);
 
+    }
+
+    @PutMapping("/userupdate")
+    @UserLoginToken
+    @RefreshUserToken
+    public ResponseObj updateUser(@RequestBody User user) throws Exception {
+        userService.updateUser(user);
+        return ResponseObj.createSuccess();
+    }
+
+    @PostMapping("/useradd")
+    @UserLoginToken
+    @RefreshUserToken
+    public ResponseObj userAdd(@RequestBody User user) throws Exception {
+        userService.saveUser(user);
+        return ResponseObj.createSuccess();
+    }
+
+    @DeleteMapping("/userdel/{uid}")
+    @UserLoginToken
+    @RefreshUserToken
+    public ResponseObj userDel(@PathVariable("uid") Integer uid) throws Exception {
+        userService.deleteUserById(uid);
+        return ResponseObj.createSuccess();
     }
 }

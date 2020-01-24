@@ -18,4 +18,10 @@ public class ProjectConstant {
     public static final long tokenMaxTime = 10 * 24 * 60 * 60 * 1000;
 
     public static final String TOKEN_PREFIX = "USER:TOKEN";
+
+    public static final String DEFAULT_PWD = "password";
+
+    public static final int DEFAULT_ROLE_ID = 4;
+
+    public static final String DEFAULT_NEW_USER_STAT = "Y";
 }

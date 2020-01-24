@@ -34,3 +34,10 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
   mapper-locations: classpath:mappers/*.xml
+logging:
+  level:
+    ROOT: info
+    com:
+      itsu:
+        spbmanagevue:
+          dao: trace

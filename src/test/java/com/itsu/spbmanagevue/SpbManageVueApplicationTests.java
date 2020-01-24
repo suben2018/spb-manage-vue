@@ -85,4 +85,13 @@ public class SpbManageVueApplicationTests {
         System.out.println(page.getTotal());
     }
 
+
+    @Test
+    public void test7() {
+        User user = new User();
+        user.setId(4);
+        user.setStat("N");
+        int i = userDAO.updateById(user);
+
+    }
 }

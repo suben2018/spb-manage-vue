@@ -2,7 +2,7 @@ package com.itsu.spbmanagevue.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.itsu.spbmanagevue.entity.User;
-import com.itsu.spbmanagevue.response.ResonseObj;
+import com.itsu.spbmanagevue.response.ResponseObj;
 
 import java.util.HashMap;
 
@@ -21,8 +21,14 @@ public interface UserService {
     }
 
 
-    ResonseObj login(User user) throws Exception;
+    ResponseObj login(User user) throws Exception;
 
     IPage<HashMap> getUsersByPage(Integer currentPage, Integer pageSize);
+
+    void updateUser(User user) throws Exception;
+
+    void saveUser(User user) throws Exception;
+
+    void deleteUserById(Integer uid) throws Exception;
 
 }

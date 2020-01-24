@@ -3,12 +3,17 @@ package com.itsu.spbmanagevue.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.itsu.spbmanagevue.components.constant.ProjectConstant;
 import com.itsu.spbmanagevue.components.exception.SystemException;
 import com.itsu.spbmanagevue.dao.UserDAO;
+import com.itsu.spbmanagevue.entity.Role;
 import com.itsu.spbmanagevue.entity.User;
-import com.itsu.spbmanagevue.response.ResonseObj;
+import com.itsu.spbmanagevue.response.ResponseObj;
 import com.itsu.spbmanagevue.service.UserService;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -37,7 +42,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResonseObj login(User user) throws Exception {
+    public ResponseObj login(User user) throws Exception {
         if (user == null) {
             throw new SystemException("输入参数为null");
         }
@@ -45,10 +50,10 @@ public class UserServiceImpl implements UserService {
         QueryWrapper<User> condition = new QueryWrapper<>();
         condition.eq("username", user.getUsername());
         condition.eq("pwd", user.getPwd());
-        ResonseObj resonseObj = null;
+        ResponseObj resonseObj = null;
         user = userDAO.selectOne(condition);
         if (user == null) {
-            resonseObj = ResonseObj.createError(100, "用户名或密码错误");
+            resonseObj = ResponseObj.createError(100, "用户名或密码错误");
         } else if (!"Y".equals(user.getStat())) {
             resonseObj = resonseObj.createError(101, "用户已被锁定");
         } else {
@@ -65,4 +70,43 @@ public class UserServiceImpl implements UserService {
         return userDAO.selectUserByPage(page);
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateUser(User user) throws Exception {
+        try {
+            String id = BeanUtils.getProperty(user, "id");
+            if (StringUtils.isBlank(id)) throw new SystemException("id is null");
+            userDAO.updateById(user);
+        } catch (Exception e) {
+            throw new SystemException(e);
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void saveUser(User user) throws Exception {
+        try {
+            user.setPwd(ProjectConstant.DEFAULT_PWD);
+            user.setStat(ProjectConstant.DEFAULT_NEW_USER_STAT);
+            Role role = new Role();
+            role.setRid(ProjectConstant.DEFAULT_ROLE_ID);
+            user.setRole(role);
+            userDAO.insertUser(user);
+        } catch (Exception e) {
+            throw new SystemException(e);
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void deleteUserById(Integer uid) throws Exception {
+        if (uid == null || uid.intValue() == 0) {
+            throw new SystemException("user id 不合法");
+        }
+        try {
+            userDAO.deleteById(uid);
+        } catch (Exception e) {
+            throw new SystemException(e);
+        }
+    }
 }

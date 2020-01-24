@@ -1,6 +1,7 @@
 package com.itsu.spbmanagevue.components.aop;
 
 import com.auth0.jwt.JWT;
+import com.itsu.spbmanagevue.components.constant.ProjectConstant;
 import com.itsu.spbmanagevue.entity.User;
 import com.itsu.spbmanagevue.service.TokenService;
 import com.itsu.spbmanagevue.service.UserService;
@@ -11,6 +12,7 @@ import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -25,6 +27,9 @@ public class HandleRefreshUserToken {
 
     @Resource
     private TokenService tokenService;
+
+    @Resource
+    private RedisTemplate redisTemplate;
 
     @Autowired
     private UserService userService;
@@ -42,7 +47,8 @@ public class HandleRefreshUserToken {
         if (time <= 5 * 60 * 1000) {
             log.info("当前用户token过期时间小于5分钟，将重新分配token");
             User user = userService.getUserByUserName(userName);
-            tokenService.generateNewToken(user, oldToken, refreshUserToken.timeMiles());
+            String newToken = tokenService.generateNewToken(user, oldToken, refreshUserToken.timeMiles());
+            redisTemplate.opsForValue().set(ProjectConstant.TOKEN_PREFIX + ":" + oldToken, newToken);
         }
 
     }
