@@ -21,4 +21,17 @@
                  join tb_button b on a.menu_id = b.mid
         where a.menu_id = #{menuId}
     </select>
+
+    <select id="getMenuButtonInfo" useCache="true" resultType="java.util.HashMap">
+        SELECT a.menu_name             authenName,
+               a.url                   url,
+               IF(a.pid IS NULL, 1, 2) `level`
+        FROM tb_menu a
+        UNION ALL
+        SELECT b.`name` authenName,
+               c.url,
+               3        LEVEL
+        FROM tb_button b
+                 JOIN tb_menu c ON b.mid = c.menu_id
+    </select>
 </mapper>

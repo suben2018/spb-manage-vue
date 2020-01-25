@@ -3,6 +3,7 @@ package com.itsu.spbmanagevue.dao;
 import com.itsu.spbmanagevue.entity.Menu;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -13,4 +14,6 @@ public interface MenuDAO {
     List<Menu> getUserMenuByUserName(String username);
 
     List<Integer> getMenuButton(@Param("menuId") Integer menuId);
+
+    List<HashMap> getMenuButtonInfo();
 }
