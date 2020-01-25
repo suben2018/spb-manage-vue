@@ -56,8 +56,16 @@
         select a.* , b.role_name roleName from tb_user a join tb_role b on a.rid = b.rid
     </select>
 
-    <insert id="insertUser" parameterType="com.itsu.spbmanagevue.entity.User">
+    <insert id="insertUser" parameterType="com.itsu.spbmanagevue.entity.User" flushCache="true">
         insert into tb_user (username, pwd, email,mobile, stat, rid)
         values(#{username} , #{pwd},#{email},#{mobile},#{stat}, #{role.rid})
     </insert>
+
+    <select id="selectUserLikeByPage" resultType="java.util.HashMap">
+        select a.*, b.role_name roleName from tb_user a join tb_role b on a.rid = b.rid where a.username like #{searchValue}
+    </select>
+
+    <update id="updateUserRole" parameterType="java.lang.String" flushCache="true">
+        update tb_user SET rid = (SELECT rid from tb_role where role_name = #{newRoleName}) where username = #{username}
+    </update>
 </mapper>

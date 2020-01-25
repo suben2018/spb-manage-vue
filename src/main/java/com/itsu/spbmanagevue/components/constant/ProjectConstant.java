@@ -24,4 +24,7 @@ public class ProjectConstant {
     public static final int DEFAULT_ROLE_ID = 4;
 
     public static final String DEFAULT_NEW_USER_STAT = "Y";
+
+    public static final String DEFAULT_ILLEGAL_PARAM_MSG = "不合法的输入参数";
+
 }

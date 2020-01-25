@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.itsu.spbmanagevue.entity.User;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.HashMap;
 
@@ -19,4 +20,7 @@ public interface UserDAO extends BaseMapper<User> {
 
     void insertUser(User user);
 
+    IPage<HashMap> selectUserLikeByPage(@Param("searchValue") String searchValue, Page page);
+
+    void updateUserRole(String username, String newRoleName);
 }

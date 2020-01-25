@@ -94,4 +94,10 @@ public class SpbManageVueApplicationTests {
         int i = userDAO.updateById(user);
 
     }
+
+    @Test
+    public void test8() throws Exception {
+        IPage<HashMap> page = userService.searchUserByPage("su", 1, 2);
+        System.out.println(JSON.toJSONString(page));
+    }
 }

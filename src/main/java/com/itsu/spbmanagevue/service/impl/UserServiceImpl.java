@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.itsu.spbmanagevue.components.constant.ProjectConstant;
+import com.itsu.spbmanagevue.components.exception.IlegalParamException;
 import com.itsu.spbmanagevue.components.exception.SystemException;
 import com.itsu.spbmanagevue.dao.UserDAO;
 import com.itsu.spbmanagevue.entity.Role;
@@ -108,5 +109,40 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             throw new SystemException(e);
         }
+    }
+
+    @Override
+    public IPage<HashMap> searchUserByPage(String searchValue, Integer currentPage, Integer pageSize) throws Exception {
+        //searchValue 不为空则进行模糊查询，否则则查询全部
+        if (StringUtils.isNotBlank(searchValue)) {
+            searchValue = "%" + searchValue + "%";
+        } else {
+            return getUsersByPage(currentPage, pageSize);
+        }
+        try {
+            Page<HashMap> page = new Page<>();
+            page.setSize(pageSize);
+            page.setCurrent(currentPage);
+            return userDAO.selectUserLikeByPage(searchValue, page);
+        } catch (Exception e) {
+            throw new SystemException(e);
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateUserRole(Map params) throws Exception {
+        String username = (String) params.get("username");
+        String newRoleName = (String) params.get("newRoleName");
+        if (StringUtils.isBlank(username) || StringUtils.isBlank(newRoleName)) {
+            throw new IlegalParamException(ProjectConstant.DEFAULT_ILLEGAL_PARAM_MSG);
+        }
+
+        try {
+            userDAO.updateUserRole(username, newRoleName);
+        } catch (Exception e) {
+            throw new SystemException(e);
+        }
+
     }
 }

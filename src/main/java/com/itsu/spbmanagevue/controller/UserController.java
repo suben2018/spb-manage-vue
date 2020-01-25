@@ -9,6 +9,7 @@ import com.itsu.spbmanagevue.entity.Menu;
 import com.itsu.spbmanagevue.entity.User;
 import com.itsu.spbmanagevue.response.ResponseObj;
 import com.itsu.spbmanagevue.service.MenuService;
+import com.itsu.spbmanagevue.service.RoleService;
 import com.itsu.spbmanagevue.service.TokenService;
 import com.itsu.spbmanagevue.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,9 @@ import java.util.Map;
 @RequestMapping("/apis")
 @Slf4j
 public class UserController {
+
+    @Resource
+    RoleService roleService;
 
     @Resource
     MenuService menuService;
@@ -114,6 +118,35 @@ public class UserController {
     @RefreshUserToken
     public ResponseObj userDel(@PathVariable("uid") Integer uid) throws Exception {
         userService.deleteUserById(uid);
+        return ResponseObj.createSuccess();
+    }
+
+    @GetMapping("/usersearch/{searchValue}/{currentPage}/{pageSize}")
+    @UserLoginToken
+    @RefreshUserToken
+    public ResponseObj userSearch(@PathVariable("searchValue") String searchValue, @PathVariable("currentPage") Integer currentPage, @PathVariable("pageSize") Integer pageSize) throws Exception {
+
+        IPage<HashMap> page = userService.searchUserByPage(searchValue, currentPage, pageSize);
+        Map data = new HashMap();
+        data.put("total", page.getTotal());
+        data.put("users", page.getRecords());
+        return ResponseObj.createSuccess(data);
+    }
+
+    @GetMapping("/userrolelist")
+    @UserLoginToken
+    @RefreshUserToken
+    public ResponseObj getAllUserRoles() throws Exception {
+
+        List<Map> roleNames = roleService.getAllRoleNames();
+        return ResponseObj.createSuccess(roleNames);
+    }
+
+    @PutMapping("/userupdaterole")
+    @UserLoginToken
+    @RefreshUserToken
+    public ResponseObj updateUserRole(@RequestBody Map params) throws Exception {
+        userService.updateUserRole(params);
         return ResponseObj.createSuccess();
     }
 }

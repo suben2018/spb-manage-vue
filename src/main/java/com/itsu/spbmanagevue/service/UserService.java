@@ -5,6 +5,7 @@ import com.itsu.spbmanagevue.entity.User;
 import com.itsu.spbmanagevue.response.ResponseObj;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author 苏犇
@@ -30,5 +31,9 @@ public interface UserService {
     void saveUser(User user) throws Exception;
 
     void deleteUserById(Integer uid) throws Exception;
+
+    IPage<HashMap> searchUserByPage(String searchValue, Integer currentPage, Integer pageSize) throws Exception;
+
+    void updateUserRole(Map params) throws Exception;
 
 }

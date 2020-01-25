@@ -21,6 +21,7 @@ public class ResponseObj<T> {
         this.msg = msg;
         this.data = data;
     }
+
     private ResponseObj(Integer code, String msg) {
         this.code = code;
         this.msg = msg;
@@ -35,17 +36,18 @@ public class ResponseObj<T> {
         this.data = data;
     }
 
-    public static ResponseObj createSuccess(){
+    public static ResponseObj createSuccess() {
         return new ResponseObj(ProjectConstant.SUCCESS_RETURN_CODE);
     }
 
     public static <T> ResponseObj createSuccess(T data) {
-        return new ResponseObj(ProjectConstant.SUCCESS_RETURN_CODE,data);
+        return new ResponseObj(ProjectConstant.SUCCESS_RETURN_CODE, data);
     }
 
     public static ResponseObj createError() {
         return new ResponseObj(ProjectConstant.ERROR_RETURN_CODE, ProjectConstant.ERROR_RETURN_MSG);
     }
+
     public static ResponseObj createError(Integer code) {
         return new ResponseObj(code);
     }
