@@ -12,5 +12,5 @@ import java.util.List;
 public interface MenuService {
     List<Menu> getMenusForCurrentUser(String username) throws SystemException;
 
-    List<Integer> getMenuButtonId(Integer menuId);
+    List<Integer> getButtonsForCurrentUser(Integer menuId, String token) throws Exception;
 }

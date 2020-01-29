@@ -145,4 +145,12 @@ public class UserServiceImpl implements UserService {
         }
 
     }
+
+    @Override
+    public Integer getRoleIdByUserName(String username) throws Exception {
+        QueryWrapper<User> condition = new QueryWrapper<>();
+        condition.eq("username", username).select("rid").last("limit 1");
+        Integer rid = (Integer) userDAO.selectMaps(condition).get(0).get("rid");
+        return rid;
+    }
 }

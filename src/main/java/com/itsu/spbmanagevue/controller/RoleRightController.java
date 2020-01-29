@@ -5,13 +5,12 @@ import com.itsu.spbmanagevue.components.annotations.UserLoginToken;
 import com.itsu.spbmanagevue.response.ResponseObj;
 import com.itsu.spbmanagevue.service.RoleRightService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author suben
@@ -32,5 +31,22 @@ public class RoleRightController {
     public ResponseObj getRightlist() throws Exception {
         List<HashMap> roleRightList = roleRightService.getRoleRightList();
         return ResponseObj.createSuccess(roleRightList);
+    }
+
+    @GetMapping("/rolelist")
+    @UserLoginToken
+    @RefreshUserToken
+    public ResponseObj getRolelist() throws Exception {
+        List<Map> data = roleRightService.getRolesList();
+        return ResponseObj.createSuccess(data);
+    }
+
+    @DeleteMapping("/menudelref/{menuId}/{rid}")
+    @UserLoginToken
+    @RefreshUserToken
+    public ResponseObj deleteMenuRef(@PathVariable("menuId") Integer menuId, @PathVariable("rid") Integer rid) throws Exception {
+        log.info("menuId:{}, rid:{}", menuId, rid);
+        roleRightService.deleteRoleRightRef(rid, menuId);
+        Map data = roleRightService.getRoleRights(rid);return ResponseObj.createSuccess(data);
     }
 }

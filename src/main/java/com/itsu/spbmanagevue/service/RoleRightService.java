@@ -2,6 +2,7 @@ package com.itsu.spbmanagevue.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author suben
@@ -9,4 +10,10 @@ import java.util.List;
  */
 public interface RoleRightService {
     List<HashMap> getRoleRightList() throws Exception;
+
+    List<Map> getRolesList() throws Exception;
+
+    Map getRoleRights(Integer rid) throws Exception;
+
+    void deleteRoleRightRef(Integer rid, Integer mid) throws Exception;
 }

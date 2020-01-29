@@ -3,14 +3,13 @@ package com.itsu.spbmanagevue.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.itsu.annotation.TreeBean;
-import com.itsu.annotation.TreeChildren;
-import com.itsu.annotation.TreeId;
-import com.itsu.annotation.TreePid;
+import com.itsu.spbmanagevue.utils.annotation.TreeBean;
+import com.itsu.spbmanagevue.utils.annotation.TreeChildren;
+import com.itsu.spbmanagevue.utils.annotation.TreeId;
+import com.itsu.spbmanagevue.utils.annotation.TreePid;
 import lombok.Data;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author 苏犇
@@ -38,8 +37,9 @@ public class Menu {
     @TableField("icon")
     private String icon;
 
-    @TableField(exist = false)
-    private Set<Button> buttons;
+
+    @TableField("type")
+    private String type;
 
     @TreeChildren
     @TableField(exist = false)

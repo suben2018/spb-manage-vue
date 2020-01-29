@@ -36,4 +36,6 @@ public interface UserService {
 
     void updateUserRole(Map params) throws Exception;
 
+    Integer getRoleIdByUserName(String username) throws Exception;
+
 }

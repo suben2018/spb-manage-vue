@@ -95,11 +95,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.itsu</groupId>
-            <artifactId>WebAppUtil</artifactId>
-            <version>1.1.1</version>
-        </dependency>
     </dependencies>
 
     <build>

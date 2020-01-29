@@ -24,6 +24,9 @@ public class Role {
     @TableField("stat")
     private String stat;
 
+    @TableField("role_desc")
+    private String roleDesc;
+
     @TableField(exist = false)
     private List<Menu> menus;
 }

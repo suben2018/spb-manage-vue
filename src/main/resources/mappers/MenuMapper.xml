@@ -12,26 +12,30 @@
                  join tb_role c on b.rid = c.rid
                  join tb_user d on c.rid = d.rid
         where d.username = #{value}
+          and a.type = 'MU'
 
     </select>
 
     <select id="getMenuButton" useCache="true" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        select b.id
+        select a.menu_id
         from tb_menu a
-                 join tb_button b on a.menu_id = b.mid
-        where a.menu_id = #{menuId}
+                 join tb_role_menu b on a.menu_id = b.mid
+                 join tb_role c on b.rid = c.rid
+        where c.rid = #{rid}
+          and a.pid = #{menuId}
+          and a.type = 'BT'
     </select>
 
     <select id="getMenuButtonInfo" useCache="true" resultType="java.util.HashMap">
-        SELECT a.menu_name             authenName,
-               a.url                   url,
-               IF(a.pid IS NULL, 1, 2) `level`
+        SELECT a.menu_name                                             authenName,
+               a.url                                                   url,
+               case
+                   when a.type = 'MU' AND a.pid is null then 1
+                   when a.type = 'MU' and a.pid is not null then 2
+                   when a.type = 'BT' and a.pid is not null then 3 end `level`
         FROM tb_menu a
-        UNION ALL
-        SELECT b.`name` authenName,
-               c.url,
-               3        LEVEL
-        FROM tb_button b
-                 JOIN tb_menu c ON b.mid = c.menu_id
+
     </select>
+
+
 </mapper>

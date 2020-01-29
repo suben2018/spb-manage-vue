@@ -91,8 +91,8 @@ public class UserController {
     @GetMapping("/usermenubutton/{menuId}")
     @UserLoginToken
     @RefreshUserToken
-    public ResponseObj getUserMenuButton(@PathVariable("menuId") Integer menuId) {
-        List<Integer> buttonIds = menuService.getMenuButtonId(menuId);
+    public ResponseObj getUserMenuButton(@PathVariable("menuId") Integer menuId, @RequestHeader("token") String token) throws Exception {
+        List<Integer> buttonIds = menuService.getButtonsForCurrentUser(menuId, token);
         return ResponseObj.createSuccess(buttonIds);
 
     }

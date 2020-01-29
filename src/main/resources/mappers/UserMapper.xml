@@ -16,6 +16,7 @@
             <id property="rid" column="rid"/>
             <result property="roleName" column="role_name"/>
             <result property="stat" column="stat"/>
+            <result property="roleDesc" column="role_desc"/>
             <collection property="menus" ofType="com.itsu.spbmanagevue.entity.Menu" javaType="java.util.List">
                 <id property="menuId" column="menu_id"/>
                 <result property="icon" column="icon"/>
@@ -37,6 +38,7 @@
             tb_user.stat,
             tb_role.rid,
             tb_role.role_name,
+            tb_role.role_desc,
             tb_role.stat,
             tb_menu.menu_id,
             tb_menu.icon,
